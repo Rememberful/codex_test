@@ -12,6 +12,7 @@ import io
 from fastapi import FastAPI, HTTPException, Query, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 from .ai import generate_ai_summary
 from .models import ScanRequest, ScanResult, ScanStatus, ScanSummary
@@ -27,7 +28,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+
+
+@app.get("/")
+async def root() -> FileResponse:
+    return FileResponse("static/index.html")
 
 executor = ThreadPoolExecutor(max_workers=4)
 scan_store: Dict[str, ScanResult] = {}
