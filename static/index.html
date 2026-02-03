@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OWASP AI Scanner</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="bg"></div>
+    <main class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Hosted OWASP Top 10 Scanner</p>
+          <h1>AI-Powered Web App Vulnerability Scanner</h1>
+          <p class="subhead">
+            Scan authorized targets, map findings to OWASP Top 10, and get prioritized remediation guidance.
+          </p>
+        </div>
+        <div class="card accent">
+          <h2>Scan Controls</h2>
+          <form id="scan-form">
+            <label>
+              Target URL
+              <input type="url" name="target" placeholder="https://example.com" required />
+            </label>
+            <label>
+              Max pages
+              <input type="number" name="maxPages" value="15" min="1" max="200" />
+            </label>
+            <label>
+              Allowlist domains (optional)
+              <input
+                type="text"
+                name="allowlist"
+                placeholder="example.com, api.example.com"
+              />
+            </label>
+            <label class="toggle">
+              <input type="checkbox" name="includeAi" />
+              Include AI recommendations (requires API key)
+            </label>
+            <button type="submit">Start Scan</button>
+          </form>
+          <p class="note">Only scan targets you own or have explicit permission to test.</p>
+        </div>
+      </header>
+
+      <section class="panel" id="status-panel">
+        <div class="status-row">
+          <div>
+            <h2>Status</h2>
+            <p id="status-text">Waiting to start.</p>
+          </div>
+          <div class="progress">
+            <div class="progress-bar" id="progress-bar"></div>
+          </div>
+        </div>
+        <div class="metrics">
+          <div>
+            <span class="metric-label">Pages scanned</span>
+            <span class="metric-value" id="pages-scanned">0</span>
+          </div>
+          <div>
+            <span class="metric-label">Findings</span>
+            <span class="metric-value" id="findings-count">0</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="results-panel">
+        <h2>Findings</h2>
+        <div id="findings"></div>
+      </section>
+
+      <section class="panel" id="ai-panel">
+        <h2>AI Summary</h2>
+        <div id="ai-summary" class="summary">Enable AI recommendations to see a summary.</div>
+      </section>
+
+      <section class="panel" id="history-panel">
+        <div class="status-row">
+          <div>
+            <h2>Scan History</h2>
+            <p class="note">Recent scans stored in memory for this server instance.</p>
+          </div>
+          <button class="ghost" id="refresh-history">Refresh</button>
+        </div>
+        <div id="history"></div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
