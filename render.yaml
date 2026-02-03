@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: owasp-ai-scanner
+    runtime: docker
+    plan: starter
+    branch: main
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-5-mini
+    healthCheckPath: /healthz
