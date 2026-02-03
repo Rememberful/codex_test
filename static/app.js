@@ -5,6 +5,7 @@ const pagesScanned = document.getElementById("pages-scanned");
 const findingsCount = document.getElementById("findings-count");
 const findingsContainer = document.getElementById("findings");
 const aiSummary = document.getElementById("ai-summary");
+const scanErrors = document.getElementById("scan-errors");
 const historyContainer = document.getElementById("history");
 const refreshHistoryButton = document.getElementById("refresh-history");
 
@@ -37,6 +38,7 @@ form.addEventListener("submit", async (event) => {
   aiSummary.textContent = data.get("includeAi") === "on"
     ? "Waiting for AI summary..."
     : "Enable AI recommendations to see a summary.";
+  scanErrors.textContent = "No errors reported.";
 
   const response = await fetch("/api/scan", {
     method: "POST",
@@ -84,6 +86,10 @@ function updateProgress(data) {
 
   if (data.ai_summary) {
     aiSummary.textContent = data.ai_summary;
+  }
+
+  if (data.errors && data.errors.length) {
+    scanErrors.textContent = data.errors.join("\n");
   }
 }
 
