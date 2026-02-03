@@ -30,9 +30,16 @@ def generate_ai_summary(findings: List[Finding], target_url: str) -> str:
         f"Target: {target_url}\n\nFindings:\n{findings_text}\n"
     )
 
-    response = client.responses.create(
-        model=model,
-        input=prompt,
-    )
-
-    return response.output_text
+    try:
+        response = client.responses.create(
+            model=model,
+            input=prompt,
+        )
+        return response.output_text
+    except AttributeError:
+        # Fallback for older OpenAI SDKs that don't expose Responses API
+        response = client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        return response.choices[0].message.content or ""
